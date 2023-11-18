@@ -1,53 +1,66 @@
-const Names = ['Alice', 'Bob', 'Charlie', 'David', 'Eva'];
+const names = ['Alice', 'Bob', 'Charlie', 'David', 'Eva'];
 const careers = ['Web Developer', 'Graphic Designer', 'Writer', 'Video Editor'];
+
 let freelancers = [
   { name: 'Alice', occupation: 'Web Developer', startingPrice: 50 },
   { name: 'Bob', occupation: 'Graphic Designer', startingPrice: 40 },
-  { name: 'Charlie', occupation: 'writer', startingPrice: 25 },
-  { name: 'eva', occupation: 'Video Editor', startingPrice: 55 },
-  // Add more initial freelancers as needed
+  { name: 'Charlie', occupation: 'Writer', startingPrice: 25 },
+  { name: 'Eva', occupation: 'Video Editor', startingPrice: 55 },
 ];
 
-function makeFreelancers() {
-    const freelancersContainer = document.createElement('div');
-    for (const freelancer of freelancers) {
-        const freelancerDiv = document.createElement('div');
-  
-      
-        freelancerDiv.textContent = `${freelancer.name}, ${freelancer.occupation}, $${freelancer.startingPrice}`;
-  
-      
-        freelancersContainer.appendChild(freelancerDiv);
-    }
-  
-    document.body.appendChild(freelancersContainer);
+function displayFreelancers() {
+  const freelancersContainer = document.getElementById('freelancersContainer');
+
+  freelancersContainer.innerHTML = '';
+
+  const table = document.createElement('table');
+
+  const headerRow = document.createElement('tr');
+  const headers = ['Name', 'Occupation', 'Starting Price'];
+
+  for (const headerText of headers) {
+    const th = document.createElement('th');
+    th.textContent = headerText;
+    headerRow.appendChild(th);
   }
 
-function randoFreelancers() {
-    if (freelancers.length < 20) { 
-        const Name = Names[Math.floor(Math.random() * Names.length)];
-        const Career = careers[Math.floor(Math.random() * careers.length)];
-        const StartingPrice = Math.floor(Math.random() * 100) + 30;
-    
-        freelancers.push({
-          name: Name,
-          occupation: Career,
-          startingPrice: StartingPrice
-        });
-    
-        makeFreelancers();
-      }
+  table.appendChild(headerRow);
+
+  for (const freelancer of freelancers) {
+    const row = document.createElement('tr');
+
+    for (const key in freelancer) {
+      const cell = document.createElement('td');
+      cell.textContent = freelancer[key];
+      row.appendChild(cell);
     }
 
-function calculateAverageStartingPrice() {
-    let totalStartingPrice = 0;
-    for (let i = 0; i < freelancers.length; i++) {
-      totalStartingPrice += freelancers[i].startingPrice;
-    }
-    const averageStartingPrice = freelancers.length > 0 ? totalStartingPrice / freelancers.length : 0;
-  
-    return averageStartingPrice;
+    table.appendChild(row);
   }
 
-makeFreelancers();
-setInterval(randoFreelancers, 5000);
+  freelancersContainer.appendChild(table);
+}
+
+function addRandomFreelancer() {
+  if (freelancers.length < 20) {
+    const randomName = names[Math.floor(Math.random() * names.length)];
+    const randomCareer = careers[Math.floor(Math.random() * careers.length)];
+    const randomStartingPrice = Math.floor(Math.random() * 100) + 30;
+
+    
+    freelancers.push({
+      name: randomName,
+      occupation: randomCareer,
+      startingPrice: randomStartingPrice
+    });
+
+    
+    displayFreelancers();
+  }
+}
+
+
+displayFreelancers();
+
+
+setInterval(addRandomFreelancer, 5000);
